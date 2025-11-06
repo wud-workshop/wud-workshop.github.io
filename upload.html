@@ -1,190 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload Sketch - P5.js Workshop</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="upload-container">
-    <h1>Upload Your P5.js Sketch</h1>
-    
-    <form id="upload-form">
-      <div class="form-group">
-        <label for="author-name">Your Name *</label>
-        <input 
-          type="text" 
-          id="author-name" 
-          name="authorName" 
-          required 
-          maxlength="100"
-          placeholder="Enter your name"
-        >
-      </div>
-      
-      <div class="form-group">
-        <label>Sketch File (.js) *</label>
-        <div 
-          id="drop-zone" 
-          class="drop-zone"
-        >
-          <p id="drop-text">Drag & drop your .js file here<br>or click to select</p>
-          <input 
-            type="file" 
-            id="file-input" 
-            accept=".js"
-            style="display: none;"
-          >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Sketch - P5.js Workshop</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="upload-container">
+      <h1>Upload Your P5.js Sketch</h1>
+
+      <form id="upload-form">
+        <div class="form-group">
+          <label for="author-name">Your Name *</label>
+          <input
+            type="text"
+            id="author-name"
+            name="authorName"
+            required
+            maxlength="100"
+            placeholder="Enter your name"
+          />
         </div>
+
+        <div class="form-group">
+          <label>Sketch File (.js) *</label>
+          <div id="drop-zone" class="drop-zone">
+            <p id="drop-text">Drag & drop your .js file here<br />or click to select</p>
+            <input type="file" id="file-input" accept=".js" style="display: none" />
+          </div>
+        </div>
+
+        <button type="submit" id="upload-btn" disabled>Upload Sketch</button>
+        <span class="loading" id="loading" style="display: none">Uploading...</span>
+      </form>
+
+      <div id="message"></div>
+
+      <div style="margin-top: 20px">
+        <a href="index.html">← Back to Gallery</a>
       </div>
-      
-      <button type="submit" id="upload-btn" disabled>Upload Sketch</button>
-      <span class="loading" id="loading" style="display: none;">Uploading...</span>
-    </form>
-    
-    <div id="message"></div>
-    
-    <div style="margin-top: 20px;">
-      <a href="index.html">← Back to Gallery</a>
     </div>
-  </div>
 
-  <script>
-    // IMPORTANT: Update this URL after deploying the Cloudflare Worker
-    const WORKER_URL = 'http://localhost:8787';
-    
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const dropText = document.getElementById('drop-text');
-    const uploadBtn = document.getElementById('upload-btn');
-    const uploadForm = document.getElementById('upload-form');
-    const messageDiv = document.getElementById('message');
-    const loadingSpan = document.getElementById('loading');
-    
-    let selectedFile = null;
-    
-    // Click to select file
-    dropZone.addEventListener('click', () => {
-      fileInput.click();
-    });
-    
-    // File input change
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      handleFile(file);
-    });
-    
-    // Drag and drop handlers
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('active');
-    });
-    
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('active');
-    });
-    
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('active');
-      
-      const file = e.dataTransfer.files[0];
-      handleFile(file);
-    });
-    
-    // Handle file selection
-    function handleFile(file) {
-      selectedFile = null;
-      uploadBtn.disabled = true;
-      
-      if (!file) {
-        showMessage('Please select a file', 'error');
-        return;
-      }
-      
-      // Validate file type
-      if (!file.name.endsWith('.js')) {
-        showMessage('File must be a .js file', 'error');
-        return;
-      }
-      
-      // Validate file size (50KB = 51200 bytes)
-      if (file.size > 51200) {
-        showMessage('File must be less than 50KB', 'error');
-        return;
-      }
-      
-      // File is valid
-      selectedFile = file;
-      dropText.innerHTML = `<strong>Selected:</strong> ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-      uploadBtn.disabled = false;
-      messageDiv.innerHTML = '';
-    }
-    
-    // Form submission
-    uploadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const authorName = document.getElementById('author-name').value.trim();
-      
-      if (!authorName) {
-        showMessage('Please enter your name', 'error');
-        return;
-      }
-      
-      if (!selectedFile) {
-        showMessage('Please select a file', 'error');
-        return;
-      }
-      
-      // Show loading state
-      uploadBtn.disabled = true;
-      loadingSpan.style.display = 'inline-block';
-      messageDiv.innerHTML = '';
-      
-      try {
-        // Create form data
-        const formData = new FormData();
-        formData.append('authorName', authorName);
-        formData.append('file', selectedFile);
-        
-        // Upload to worker
-        const response = await fetch(WORKER_URL, {
-          method: 'POST',
-          body: formData
-        });
-        
-        const result = await response.json();
-        
-        if (response.ok && result.success) {
-          showMessage(
-            `Success! Your sketch has been uploaded. <a href="${result.galleryUrl}">View Gallery</a>`,
-            'success'
-          );
-          // Reset form
-          uploadForm.reset();
-          selectedFile = null;
-          dropText.innerHTML = 'Drag & drop your .js file here<br>or click to select';
-        } else {
-          showMessage(result.error || 'Upload failed', 'error');
-          uploadBtn.disabled = false;
+    <script>
+      const WORKER_URL = 'https://p5-upload-worker.michele-muffin.workers.dev';
+
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const dropText = document.getElementById('drop-text');
+      const uploadBtn = document.getElementById('upload-btn');
+      const uploadForm = document.getElementById('upload-form');
+      const messageDiv = document.getElementById('message');
+      const loadingSpan = document.getElementById('loading');
+
+      let selectedFile = null;
+
+      // Click to select file
+      dropZone.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      // File input change
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        handleFile(file);
+      });
+
+      // Drag and drop handlers
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('active');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('active');
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('active');
+
+        const file = e.dataTransfer.files[0];
+        handleFile(file);
+      });
+
+      // Handle file selection
+      function handleFile(file) {
+        selectedFile = null;
+        uploadBtn.disabled = true;
+
+        if (!file) {
+          showMessage('Please select a file', 'error');
+          return;
         }
-      } catch (error) {
-        console.error('Upload error:', error);
-        showMessage('Upload failed. Please try again.', 'error');
-        uploadBtn.disabled = false;
-      } finally {
-        loadingSpan.style.display = 'none';
-      }
-    });
-    
-    // Show message
-    function showMessage(text, type) {
-      messageDiv.innerHTML = text;
-      messageDiv.className = `message ${type}`;
-    }
-  </script>
-</body>
-</html>
 
+        // Validate file type
+        if (!file.name.endsWith('.js')) {
+          showMessage('File must be a .js file', 'error');
+          return;
+        }
+
+        // Validate file size (50KB = 51200 bytes)
+        if (file.size > 51200) {
+          showMessage('File must be less than 50KB', 'error');
+          return;
+        }
+
+        // File is valid
+        selectedFile = file;
+        dropText.innerHTML = `<strong>Selected:</strong> ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+        uploadBtn.disabled = false;
+        messageDiv.innerHTML = '';
+      }
+
+      // Form submission
+      uploadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const authorName = document.getElementById('author-name').value.trim();
+
+        if (!authorName) {
+          showMessage('Please enter your name', 'error');
+          return;
+        }
+
+        if (!selectedFile) {
+          showMessage('Please select a file', 'error');
+          return;
+        }
+
+        // Show loading state
+        uploadBtn.disabled = true;
+        loadingSpan.style.display = 'inline-block';
+        messageDiv.innerHTML = '';
+
+        try {
+          // Create form data
+          const formData = new FormData();
+          formData.append('authorName', authorName);
+          formData.append('file', selectedFile);
+
+          // Upload to worker
+          const response = await fetch(WORKER_URL, {
+            method: 'POST',
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            showMessage(
+              `Success! Your sketch has been uploaded. <a href="${result.galleryUrl}">View Gallery</a>`,
+              'success',
+            );
+            // Reset form
+            uploadForm.reset();
+            selectedFile = null;
+            dropText.innerHTML = 'Drag & drop your .js file here<br>or click to select';
+          } else {
+            showMessage(result.error || 'Upload failed', 'error');
+            uploadBtn.disabled = false;
+          }
+        } catch (error) {
+          console.error('Upload error:', error);
+          showMessage('Upload failed. Please try again.', 'error');
+          uploadBtn.disabled = false;
+        } finally {
+          loadingSpan.style.display = 'none';
+        }
+      });
+
+      // Show message
+      function showMessage(text, type) {
+        messageDiv.innerHTML = text;
+        messageDiv.className = `message ${type}`;
+      }
+    </script>
+  </body>
+</html>
