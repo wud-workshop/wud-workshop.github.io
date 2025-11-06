@@ -3,21 +3,28 @@
 
 export default {
   async fetch(request, env) {
-    // CORS headers
+    // CORS: single allowed origin (simpler, clearer)
+    const ALLOWED_ORIGIN = 'https://wud-workshop.github.io';
+    const origin = request.headers.get('Origin') || '';
     const corsHeaders = {
-      'Access-Control-Allow-Origin': 'https://wud-workshop.github.io',
+      'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
 
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, { status: 204, headers: corsHeaders });
     }
 
     // Only allow POST requests
     if (request.method !== 'POST') {
       return jsonResponse({ success: false, error: 'Method not allowed' }, 405, corsHeaders);
+    }
+
+    // Enforce allowed origin for actual requests (protects simple requests without preflight)
+    if (origin !== ALLOWED_ORIGIN) {
+      return jsonResponse({ success: false, error: 'Origin not allowed' }, 403, corsHeaders);
     }
 
     try {
