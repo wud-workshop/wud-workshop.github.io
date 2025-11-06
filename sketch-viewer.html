@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sketch Viewer</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      // Get the sketch filename from the URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const sketchFile = urlParams.get('sketch');
+
+      if (sketchFile) {
+        // Load the sketch script dynamically
+        const script = document.createElement('script');
+        script.src = `sketches/${sketchFile}`;
+        script.onerror = () => {
+          document.body.innerHTML = '<div style="text-align: center; color: #666;">Error loading sketch</div>';
+        };
+        document.body.appendChild(script);
+      } else {
+        document.body.innerHTML = '<div style="text-align: center; color: #666;">No sketch specified</div>';
+      }
+    </script>
+  </body>
+</html>
+

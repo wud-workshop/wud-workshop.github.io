@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Environment variables (keep secrets safe)
+.env
+.env.local
+worker/.dev.vars
+
+# Wrangler
+.wrangler/
+worker/.wrangler/
+
+# Build artifacts
+dist/
+

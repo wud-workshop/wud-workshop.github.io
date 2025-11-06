@@ -1,0 +1,22 @@
+{
+  "name": "p5-upload-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for P5.js Workshop Gallery uploads",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "secret:put": "wrangler secret put"
+  },
+  "keywords": [
+    "cloudflare",
+    "worker",
+    "p5js",
+    "gallery"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.45.4"
+  }
+}
