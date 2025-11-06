@@ -3,8 +3,8 @@ main = "index.js"
 compatibility_date = "2025-11-04"
 
 [vars]
-GITHUB_OWNER = "itzMaffi"
-GITHUB_REPO = "p5-workshop-gh"
+GITHUB_OWNER = "wud-workshop"
+GITHUB_REPO = "wud-workshop.github.io"
 
 # Secret is set via command: wrangler secret put GITHUB_TOKEN
 # Do NOT put the actual token in this file
