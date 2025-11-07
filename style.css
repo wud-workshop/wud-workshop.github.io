@@ -99,13 +99,14 @@ button:disabled {
 }
 .controls-overlay {
   position: fixed;
-  bottom: 15px;
-  right: 15px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-color: transparent;
   color: white;
-  padding: 0;
+  padding: 15px;
   display: flex;
-  gap: 5px;
+  justify-content: space-between;
   align-items: center;
 }
 .nav-buttons {
@@ -113,15 +114,21 @@ button:disabled {
   gap: 5px;
 }
 .nav-buttons button,
-.controls-overlay button {
+.controls-overlay > button {
   margin: 0;
   background-color: #333;
   color: white;
   padding: 10px 20px;
 }
 .nav-buttons button:hover:not(:disabled),
-.controls-overlay button:hover:not(:disabled) {
+.controls-overlay > button:hover:not(:disabled) {
   background-color: #555;
+}
+.sketch-info {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
 }
 .empty-state {
   text-align: center;
