@@ -144,70 +144,68 @@ button:disabled {
   text-decoration: underline;
 }
 
-/* Landing Page Styles, copied from Claude */
-landing-h1 {
-  color: #FFFFFF;
-  leading-trim: both;
-  text-edge: cap;
+/* Landing Page Styles */
+
+.black-background {
+  background-color: #000000;
+}
+
+.landing {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.landing h1 {
+  color: #ffffff;
   font-feature-settings: 'salt' on;
-  font-family: "Sole Serif Titling";
+  font-family: 'Sole Serif Titling';
   font-size: 4.75rem;
   font-style: normal;
   font-weight: 800;
   line-height: 100%;
+  margin-bottom: 40px;
 }
 
-landing-h2 {
-  color: #FFFFFF;
-  font-family: "Sole Serif Small";
+.big-text {
+  color: #ffffff;
+  font-family: 'Sole Serif Small';
   font-size: 1.625rem;
   font-style: normal;
   font-weight: 500;
   line-height: 140%;
   letter-spacing: -0.01625rem;
+  margin-bottom: 30px;
 }
 
-landing-p {
-  color: #FFFFFF;
-  leading-trim: both;
-  text-edge: cap;
-  font-family: "Sole Serif Small";
+.small-text {
+  color: #ffffff;
+  font-family: 'Sole Serif Small';
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
+  margin-bottom: 15px;
 }
 
-/* test */
-/* Centers all content horizontally */
-landing-h1, landing-h2, landing-p, landing-button {
-    max-width: 600px;      /* Limits content width */
-    margin: 0 auto;         /* Centers horizontally (auto left/right margins) */
+.landing button {
+  margin-top: 40px;
 }
 
-/* Makes custom tags display as block elements (stack vertically) */
-landing-h1, landing-h2, landing-p, landing-button {
-    display: block;         /* Each element takes full width and starts on new line */
+/* Button Link Styles */
+.btn-link {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.2s;
 }
 
-/* Adds spacing around the page edges */
-body {
-    padding: 40px 20px;     /* 40px top/bottom, 20px left/right */
-}
-
-/* Vertical spacing between elements */
-landing-h1 {
-    margin-bottom: 40px;    /* Space below title */
-}
-
-landing-h2 {
-    margin-bottom: 30px;    /* Space below each paragraph */
-}
-
-landing-p {
-    margin-bottom: 15px;    /* Space below each line */
-}
-
-landing-button {
-    margin-top: 40px;       /* Extra space above button */
+.btn-link:hover {
+  background-color: #555;
 }

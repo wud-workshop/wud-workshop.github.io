@@ -6,7 +6,8 @@
     <title>P5.js Workshop Gallery</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <div id="gallery-container">
+  <body>
+    <div id="gallery-container">
       <div id="sketch-container"></div>
       <div class="controls-overlay">
         <div class="nav-buttons">
@@ -18,10 +19,8 @@
           <span id="sketch-author"></span>
         </div>
         <div>
-          <a href="upload.html" style="color: white; text-decoration: none">
-            <button>Upload</button>
-            <button>Home</button>
-          </a>
+          <a href="upload.html" class="btn-link">Upload</a>
+          <a href="index.html" class="btn-link">Home</a>
         </div>
       </div>
     </div>
@@ -62,7 +61,7 @@
         document.getElementById('prev-btn').disabled = true;
         document.getElementById('next-btn').disabled = true;
         document.getElementById('sketch-counter').textContent = '';
-        document.getElementById('sketch-author').textContent = '';
+        document.getElementById('sketch-author').textContent = 'No sketches yet';
       }
 
       // Load a specific sketch by index
