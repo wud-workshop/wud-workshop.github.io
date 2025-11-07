@@ -145,7 +145,7 @@ button:disabled {
 }
 
 /* Landing Page Styles, copied from Claude */
-.landing-h1 {
+landing-h1 {
   color: #FF005A;
   color: color(display-p3 0.851 0.2314 0.3725);
   leading-trim: both;
@@ -158,7 +158,7 @@ button:disabled {
   line-height: 100%;
 }
 
-.landing-h2 {
+landing-h2 {
   color: #FF005A;
   color: color(display-p3 0.851 0.2314 0.3725);
   font-family: "Sole Serif Small";
@@ -169,7 +169,7 @@ button:disabled {
   letter-spacing: -0.01625rem;
 }
 
-.landing-p {
+landing-p {
   color: #FF005A;
   color: color(display-p3 0.851 0.2314 0.3725);
   leading-trim: both;
