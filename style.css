@@ -147,7 +147,6 @@ button:disabled {
 /* Landing Page Styles, copied from Claude */
 landing-h1 {
   color: #FFFFFF;
-  color: color(display-p3 0.851 0.2314 0.3725);
   leading-trim: both;
   text-edge: cap;
   font-feature-settings: 'salt' on;
@@ -160,7 +159,6 @@ landing-h1 {
 
 landing-h2 {
   color: #FFFFFF;
-  color: color(display-p3 0.851 0.2314 0.3725);
   font-family: "Sole Serif Small";
   font-size: 1.625rem;
   font-style: normal;
@@ -171,7 +169,6 @@ landing-h2 {
 
 landing-p {
   color: #FFFFFF;
-  color: color(display-p3 0.851 0.2314 0.3725);
   leading-trim: both;
   text-edge: cap;
   font-family: "Sole Serif Small";
