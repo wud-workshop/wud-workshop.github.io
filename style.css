@@ -143,3 +143,40 @@ button:disabled {
 .empty-state a:hover {
   text-decoration: underline;
 }
+
+/* Landing Page Styles, copied from Claude */
+.landing-h1 {
+  color: #FF005A;
+  color: color(display-p3 0.851 0.2314 0.3725);
+  leading-trim: both;
+  text-edge: cap;
+  font-feature-settings: 'salt' on;
+  font-family: "Sole Serif Titling";
+  font-size: 4.75rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 100%;
+}
+
+.landing-h2 {
+  color: #FF005A;
+  color: color(display-p3 0.851 0.2314 0.3725);
+  font-family: "Sole Serif Small";
+  font-size: 1.625rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  letter-spacing: -0.01625rem;
+}
+
+.landing-p {
+  color: #FF005A;
+  color: color(display-p3 0.851 0.2314 0.3725);
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "Sole Serif Small";
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}
