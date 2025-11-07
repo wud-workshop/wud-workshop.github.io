@@ -122,7 +122,7 @@ button:disabled {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(0, 0, 0, 0.7); */
   color: white;
   padding: 15px;
   display: flex;
