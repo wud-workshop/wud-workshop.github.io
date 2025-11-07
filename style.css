@@ -209,3 +209,5 @@ button:disabled {
 .btn-link:hover {
   background-color: #555;
 }
+
+a, a:visited { color: white; }
