@@ -102,32 +102,28 @@ button:disabled {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: transparent;
   color: white;
   padding: 15px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
 }
-.nav-buttons {
-  display: flex;
-  gap: 5px;
-}
-.nav-buttons button,
-.controls-overlay button {
-  margin: 0;
+.nav-buttons button {
+  margin: 0 5px;
   background-color: #333;
   color: white;
   padding: 10px 20px;
 }
-.nav-buttons button:hover:not(:disabled),
-.controls-overlay button:hover:not(:disabled) {
+.nav-buttons button:hover:not(:disabled) {
   background-color: #555;
 }
-.sketch-info {
-  text-align: left;
-  white-space: nowrap;
+.controls-overlay > button {
+  background-color: #333;
+  color: white;
+}
+.controls-overlay > button:hover:not(:disabled) {
+  background-color: #555;
 }
 .empty-state {
   text-align: center;
