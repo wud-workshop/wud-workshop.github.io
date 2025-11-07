@@ -53,7 +53,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #4caf50;
+  background-color: #333;
   color: white;
 }
 button:hover:not(:disabled) {
