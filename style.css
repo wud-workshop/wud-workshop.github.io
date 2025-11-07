@@ -177,3 +177,37 @@ landing-p {
   font-weight: 400;
   line-height: 140%;
 }
+
+/* test */
+/* Centers all content horizontally */
+landing-h1, landing-h2, landing-p, landing-button {
+    max-width: 600px;      /* Limits content width */
+    margin: 0 auto;         /* Centers horizontally (auto left/right margins) */
+}
+
+/* Makes custom tags display as block elements (stack vertically) */
+landing-h1, landing-h2, landing-p, landing-button {
+    display: block;         /* Each element takes full width and starts on new line */
+}
+
+/* Adds spacing around the page edges */
+body {
+    padding: 40px 20px;     /* 40px top/bottom, 20px left/right */
+}
+
+/* Vertical spacing between elements */
+landing-h1 {
+    margin-bottom: 40px;    /* Space below title */
+}
+
+landing-h2 {
+    margin-bottom: 30px;    /* Space below each paragraph */
+}
+
+landing-p {
+    margin-bottom: 15px;    /* Space below each line */
+}
+
+landing-button {
+    margin-top: 40px;       /* Extra space above button */
+}
