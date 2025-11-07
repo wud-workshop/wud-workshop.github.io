@@ -212,7 +212,7 @@ button:disabled {
 
 a, a:visited { color: white; }
 
-.small-text:last-child {
+small-text:last-child {
   float: right;
   clear: right;
 }
