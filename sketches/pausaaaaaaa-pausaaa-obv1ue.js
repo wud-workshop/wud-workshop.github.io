@@ -2,10 +2,9 @@
 // Press SPACE to take a puff. The break ends when the cigarette is smoked up.
 
 let PX = 6;                    // pixel size for the whole scene
-let W = 170 * PX, H = 90 * PX; // canvas size scaled by PX
 let cig = {
-  x: 20 * PX,
-  y: 45 * PX,
+  x: 0,
+  y: 0,
   lengthPx: 110,     // logical "pixels" (not screen px); rendered with PX scale
   heightPx: 10,
   burnPx: 0,         // how much has burned (in logical pixels)
@@ -19,6 +18,7 @@ let lastPuffFrame = -999;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noStroke();
+
   // Make things crisp, “pixel art”-style
   pixelDensity(1);
   drawingContext.imageSmoothingEnabled = false;
@@ -26,6 +26,8 @@ function setup() {
 }
 
 function draw() {
+  updateCigarettePosition();   // <-- keep cigarette centered dynamically
+
   background(28); // dark background
 
   // Title "PAUSA" above
@@ -37,7 +39,7 @@ function draw() {
   pop();
 
   if (finished) {
-    drawCigarette(); // show the stub
+    drawCigarette();
     updateSmoke();
     drawSmoke();
     drawOverMessage();
@@ -47,7 +49,7 @@ function draw() {
   // Passive slow burn
   cig.burnPx = min(cig.lengthPx, cig.burnPx + cig.slowBurnRate);
 
-  // Spawn a little idle smoke while still burning
+  // Idle smoke
   if (frameCount % 10 === 0 && cig.burnPx < cig.lengthPx) {
     spawnSmoke(1, 0.2);
   }
@@ -60,30 +62,24 @@ function draw() {
   if (cig.burnPx >= cig.lengthPx) {
     finished = true;
   }
-
-  // UI hint
-  if (frameCount - lastPuffFrame > 60 && !finished) {
-    push();
-    fill(180);
-    textAlign(CENTER, CENTER);
-    textSize(3 * PX);
-    text("", width / 2, height - 8 * PX);
-    pop();
-  }
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function keyPressed() {
-  // Leertaste (space)
-  if (keyCode === 32 && !finished) {
-    takePuff();
-  }
+// --- CENTERING LOGIC -------------------------------------------------------
+
+function updateCigarettePosition() {
+  const totalLength = cig.lengthPx * PX;
+  const heightPx = cig.heightPx * PX;
+
+  cig.x = snap(width / 2 - totalLength / 2);
+  cig.y = snap(height / 2 - heightPx / 2);
 }
 
-// Mobile-friendly (optional): tap = puff
+// --- INPUT -----------------------------------------------------------------
+
 function touchStarted() {
   if (!finished) takePuff();
   return false;
@@ -91,18 +87,18 @@ function touchStarted() {
 
 function takePuff() {
   lastPuffFrame = frameCount;
-  // Burn faster during a puff
+
+  // Burn faster during puff
   cig.burnPx = min(cig.lengthPx, cig.burnPx + cig.puffBurn);
 
-  // Spawn a thicker plume of smoke
+  // Puff smoke + embers
   spawnSmoke(14, 1.0);
-
-  // Brief ember glow "flash" via extra particles near tip
   spawnEmber(8);
 }
 
+// --- PARTICLES -------------------------------------------------------------
+
 function spawnSmoke(n, vigor = 1) {
-  // Emitter at burning tip
   const tip = burningTipScreenXY();
   for (let i = 0; i < n; i++) {
     particles.push(makeSmokeParticle(tip.x, tip.y, vigor));
@@ -134,38 +130,40 @@ function makeSmokeParticle(x, y, vigor) {
     drift: random(1000),
     life: 80 + int(random(40) * (0.7 + 0.6 * vigor)),
     age: 0,
-    size: int(random(2, 4)), // logical pixel size units
+    size: int(random(2, 4)), // logical size
   };
 }
 
 function updateSmoke() {
   for (let p of particles) {
     p.age++;
+
     if (p.type === 'smoke') {
-      // gentle side-to-side drift
       const sway = sin((p.age + p.drift) * 0.07) * 0.4 * PX;
       p.x = snap(p.x + p.vx + sway * 0.05);
       p.y = snap(p.y + p.vy);
-    } else if (p.type === 'ember') {
+    }
+
+    if (p.type === 'ember') {
       p.x = snap(p.x + p.vx);
       p.y = snap(p.y + p.vy);
-      // gravity slightly
-      p.vy += 0.02 * PX;
+      p.vy += 0.02 * PX;  // tiny gravity
     }
   }
-  // remove dead particles
+
   particles = particles.filter(p => p.age < p.life);
 }
 
 function drawSmoke() {
   for (let p of particles) {
     if (p.type === 'smoke') {
-      const a = map(p.age, 0, p.life, 200, 0); // fade
+      const a = map(p.age, 0, p.life, 200, 0);
       fill(220, a);
-      // render as chunky pixel squares
       const s = p.size * PX;
       rect(p.x, p.y, s, s);
-    } else if (p.type === 'ember') {
+    }
+
+    if (p.type === 'ember') {
       const a = map(p.age, 0, p.life, 255, 0);
       fill(255, 140, 0, a);
       rect(p.x, p.y, 1 * PX, 1 * PX);
@@ -173,59 +171,62 @@ function drawSmoke() {
   }
 }
 
+// --- CIGARETTE -------------------------------------------------------------
+
 function drawCigarette() {
-  // Snap all drawing to the pixel grid
   const x = snap(cig.x);
   const y = snap(cig.y);
   const h = snap(cig.heightPx * PX);
 
-  // How much remains (paper + filter)
   const totalL = cig.lengthPx * PX;
   const burnedL = snap(min(cig.burnPx * PX, totalL));
   const remainL = max(0, totalL - burnedL);
 
-  // Segment proportions (from right to left): filter(orange), paper(white), ember+ash(left edge)
-  // We'll render from left to right: ash+ember (thin), paper, filter
   const ashWidth = PX * 2; // thin ash front
-
-  // ASH / EMBER at the burning tip
   const tipX = x + burnedL;
-  const ashX = tipX - ashWidth;
-  fill(120); // ash grey
-  rect(ashX, y, ashWidth, h);
-  // glowing ember edge
+
+  // Ash
+  fill(120);
+  rect(tipX - ashWidth, y, ashWidth, h);
+
+  // Ember
   fill(255, 70, 30);
   rect(tipX - PX, y, PX, h);
 
-  // PAPER (remaining)
-  const paperLen = max(0, remainL - 12 * PX); // leave room for filter
+  // Paper
+  const paperLen = max(0, remainL - 12 * PX);
   if (paperLen > 0) {
-    fill(245); // off-white paper
+    fill(245);
     rect(tipX, y, paperLen, h);
-    // subtle paper seam line
+
     fill(230);
-    for (let i = 0; i < int(paperLen / (4 * PX)); i++) {
-      rect(tipX + i * 4 * PX, y + h - 1 * PX, 2, 1); // tiny seam ticks
-    }
+    for (let i = 0; i < int(paperLen / (4 * PX)); i++)
+      rect(tipX + i * 4 * PX, y + h - PX, 2, 1);
   }
 
-  // FILTER
+  // Filter
   const filterLen = min(remainL, 12 * PX);
   if (filterLen > 0) {
     const fx = tipX + paperLen;
-    fill(232, 150, 75); // orange filter
+    fill(232, 150, 75);
     rect(fx, y, filterLen, h);
-    // filter speckles
+
     fill(210, 120, 50);
-    for (let i = 0; i < 10; i++) {
-      rect(fx + int(random(filterLen / PX)) * PX, y + int(random(h / PX)) * PX, 1 * PX, 1 * PX);
-    }
+    for (let i = 0; i < 10; i++)
+      rect(
+        fx + int(random(filterLen / PX)) * PX,
+        y + int(random(h / PX)) * PX,
+        PX,
+        PX
+      );
   }
 
-  // Table/shadow line (for grounding)
+  // Shadow line
   fill(0, 40);
-  rect(x - 2 * PX, y + h + 2 * PX, (cig.lengthPx + 10) * PX, 1 * PX);
+  rect(x - 2 * PX, y + h + 2 * PX, (cig.lengthPx + 10) * PX, PX);
 }
+
+// --- UI ---------------------------------------------------------------------
 
 function drawOverMessage() {
   push();
@@ -236,12 +237,13 @@ function drawOverMessage() {
 
   textSize(3.2 * PX);
   fill(200);
-  text("Premi R per ricominciare", width / 2, height / 2 + 4 * PX);
+  text("Premi SPAZIO per ricominciare", width / 2, height / 2 + 4 * PX);
   pop();
 }
 
+// --- HELPERS ----------------------------------------------------------------
+
 function burningTipScreenXY() {
-  // Emit smoke slightly above the ember center
   const burnedL = min(cig.burnPx * PX, cig.lengthPx * PX);
   const tipX = snap(cig.x + burnedL);
   const tipY = snap(cig.y + cig.heightPx * PX / 2 - 2 * PX);
@@ -249,15 +251,16 @@ function burningTipScreenXY() {
 }
 
 function snap(v) {
-  // snap to our pixel grid for crispness
   return Math.round(v / PX) * PX;
 }
 
-// Restart with 'R'
-function keyTyped() {
-  if (key === 'r' || key === 'R') {
-    particles = [];
-    cig.burnPx = 0;
-    finished = false;
+// Restart
+function keyPressed() {
+  // Leertaste (space)
+  if (keyCode === 32 && !finished) {
+    takePuff();
   }
+  
 }
+
+
