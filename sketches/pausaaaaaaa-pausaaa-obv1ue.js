@@ -17,7 +17,7 @@ let finished = false;
 let lastPuffFrame = -999;
 
 function setup() {
-  createCanvas(W, H);
+  createCanvas(windowWidth, windowHeight);
   noStroke();
   // Make things crisp, “pixel art”-style
   pixelDensity(1);
@@ -70,6 +70,10 @@ function draw() {
     text("", width / 2, height - 8 * PX);
     pop();
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function keyPressed() {
