@@ -6,9 +6,11 @@ let target;
 let score = 0;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(windowWidth, windowHeight);
+
   player = new Frog(width / 2, height / 2, color(0, 200, 0)); // green frog
   target = new Frog(random(width), random(height), color(0, 150, 255)); // blue frog
+
   textAlign(CENTER, CENTER);
   textSize(20);
 }
@@ -35,6 +37,10 @@ function draw() {
   fill(255);
   noStroke();
   text("Score: " + score, width / 2, 30);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 // Handle arrow key input
