@@ -1,12 +1,12 @@
 let dogs = []; // array to store dog positions and movement
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(windowWidth, windowHeight);
   background(200);
 }
 
 function draw() {
-  background (255);
+  background(255);
 
   // update and draw all dogs
   for (let dog of dogs) {
@@ -19,6 +19,19 @@ function draw() {
 
     drawDog(dog.x, dog.y);
   }
+  
+  
+  // --- Instructions ---
+push();
+fill(0);
+textAlign(LEFT, TOP);
+textSize(12);
+text("Click on the canvas", 30, 30);
+pop();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function mousePressed() {
