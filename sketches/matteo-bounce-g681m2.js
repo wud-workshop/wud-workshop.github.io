@@ -3,7 +3,7 @@ const GRAVITY = 0.4;
 const BOUNCE = 0.7;
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
@@ -32,6 +32,19 @@ function draw() {
     noStroke();
     circle(b.x, b.y, b.size);
   }
+
+    // --- Instructions ---
+push();
+fill(0);
+textAlign(LEFT, TOP);
+textSize(12);
+text("Click on the canvas", 30, 30);
+pop();
+}
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 function mousePressed() {
