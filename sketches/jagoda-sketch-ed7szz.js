@@ -37,6 +37,28 @@ function draw() {
   fill(255);
   noStroke();
   text("Score: " + score, width / 2, 30);
+
+  // --- Instructions ---
+push();
+fill(255, 240);
+noStroke();
+rectMode(CORNER);
+rect(20, height - 110, 320, 90, 10);
+
+fill(0);
+textAlign(LEFT, TOP);
+textSize(14);
+text(
+  "🐸 Frog Chase Game\n" +
+  "• Use ARROW KEYS to move your frog\n" +
+  "• Catch the blue frog to score points\n" +
+  "• Each catch increases your score\n" +
+  "• Try to catch it as many times as possible!",
+  30,
+  height - 100
+);
+pop();
+
 }
 
 function windowResized() {
