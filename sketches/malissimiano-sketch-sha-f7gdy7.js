@@ -207,9 +207,9 @@ function draw() {
     
     // Calculate grid position
     const col = i % cols;
-    const row = floor(i / cols);
+    const riga = floor(i / cols);
     const cx = marginX + col * cellWidth + cellWidth / 2;
-    const cy = marginY + row * cellHeight + cellHeight / 2;
+    const cy = marginY + riga * cellHeight + cellHeight / 2;
     
     // Set fill color
     fill(shape.color.r, shape.color.g, shape.color.b);
