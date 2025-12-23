@@ -8,7 +8,7 @@ let nextGrid;
 let running = true;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   frameRate(10);
   cols = floor(width / cellSize);
   rows = floor(height / cellSize);
