@@ -41,7 +41,7 @@ textSize(12);
 text("Click on the canvas", 30, 30);
 pop();
 }
-}
+
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
