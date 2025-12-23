@@ -1,3 +1,5 @@
+//USES CAMERA
+
 let cam;
 let tiles = [];
 const cols = 10;
