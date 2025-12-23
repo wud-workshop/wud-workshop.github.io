@@ -12,7 +12,9 @@ function setup() {
     .style("color", "white")
     .style("font-size", "16px");
 
-  depthSlider = createSlider(1, 8, 5, 1);
+  depthSlider = createSlider(1, 5, 3, 1);
+  depthSlider.position(100, 100);
+
   depthSlider.style("width", "300px");
 
   // Crea un triangolo iniziale
