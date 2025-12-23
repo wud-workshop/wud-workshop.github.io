@@ -6,7 +6,7 @@ let radiusSlider;
 let saveBtn;
 
 function setup() {
-  createCanvas(800, 500);
+  createCanvas(windowWidth, windowHeight);
   background(0); // trails remain
 
   // Start circle
