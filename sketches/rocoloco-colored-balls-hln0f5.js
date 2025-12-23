@@ -2,7 +2,7 @@
 let balls = [];
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(windowWidth, windowHeight);
   noStroke();
   background(0);
 }
