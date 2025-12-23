@@ -1,37 +1,42 @@
-// White bouncing circle with trailing effect
-// Slider for radius + Save Image button
-
 let x, y, vx, vy;
 let radiusSlider;
 let saveBtn;
+let cnv;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  background(50); // trails remain
+  cnv = createCanvas(windowWidth, windowHeight);
+  cnv.position(0, 0);
+  cnv.style('z-index', '0');
 
-  // Start circle
+  background(0);
+
   x = width / 2;
   y = height / 2;
   vx = random(-4, 4);
   vy = random(-4, 4);
 
-  // UI
-  createP("Radius").style('color', '#fff').style('font-family', 'sans-serif');
+  // Slider
   radiusSlider = createSlider(5, 150, 40, 1);
+  radiusSlider.position(20, 20);
+  radiusSlider.style('width', '160px');
+  radiusSlider.style('z-index', '1');
 
+  // Save button
   saveBtn = createButton("Save Image");
+  saveBtn.position(20, 50);
+  saveBtn.style('z-index', '1');
+
   saveBtn.mousePressed(() => {
-    const timestamp = year() + "-" + nf(month(),2) + "-" + nf(day(),2) + "_" +
-                      nf(hour(),2) + nf(minute(),2) + nf(second(),2);
+    const timestamp =
+      year() + "-" + nf(month(), 2) + "-" + nf(day(), 2) + "_" +
+      nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2);
     saveCanvas("bouncing-" + timestamp, "png");
   });
 }
 
 function draw() {
-  // Do NOT clear → trail stays
   let r = radiusSlider.value();
 
-  // Move & bounce
   x += vx;
   y += vy;
 
@@ -40,8 +45,7 @@ function draw() {
   if (y - r < 0)  { y = r; vy *= -1; }
   if (y + r > height) { y = height - r; vy *= -1; }
 
-  // Draw
-  stroke(0,0,0,);
   fill(255);
+  //noStroke();
   circle(x, y, r * 2);
 }
