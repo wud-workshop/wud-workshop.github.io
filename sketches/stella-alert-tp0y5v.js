@@ -9,10 +9,11 @@ function setup() {
 }
 
 function draw() {
-  // calculate distance mouse moved since last frame
+  
   let dx = mouseX - prevX;
   let dy = mouseY - prevY;
 
+  
   // speed is distance
   speed = sqrt(dx * dx + dy * dy);
 
@@ -22,6 +23,13 @@ function draw() {
 
   // fill the background with color that changes by speed
   background(col, 100, 255 - col);
+  
+  textSize(50);
+  fill(255);
+  textFont('Courier New', 50);
+  text("MOVE YOUR MOUSE FAST!", 100,100);
+  // calculate distance mouse moved since last frame
+
 
   // update previous position
   prevX = mouseX;
