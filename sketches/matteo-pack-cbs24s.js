@@ -18,7 +18,7 @@ const WORDS = [
 let tiles = [];
 
 function setup() {
-  createCanvas(1000, 650);
+  createCanvas(windowWidth, windowHeight);
   noStroke();
   textAlign(CENTER, CENTER);
 
