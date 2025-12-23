@@ -7,7 +7,7 @@ let saveBtn;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(0); // trails remain
+  background(50); // trails remain
 
   // Start circle
   x = width / 2;
