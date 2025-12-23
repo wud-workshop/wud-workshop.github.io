@@ -1,3 +1,5 @@
+//USA CAMERA MA LAGGA RISPETTO A QUELLO PRECEDENTE, PUò ESSERE RIMOSSO (?)
+
 let cam;
 let tiles = [];
 const cols = 6;
