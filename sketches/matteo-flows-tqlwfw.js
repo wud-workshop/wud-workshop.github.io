@@ -14,7 +14,7 @@ const WORDS = [
 ];
 
 function setup() {
-  createCanvas(900, 520);
+  createCanvas(windowWidth, windowHeight);
   textFont('Helvetica, Arial, sans-serif');
   textAlign(CENTER, CENTER);
   noStroke();
