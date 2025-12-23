@@ -4,12 +4,12 @@ let balls = [];
 function setup() {
   createCanvas(800, 600);
   noStroke();
+  background(0);
 }
 
 function draw() {
-  background(240);
+  background(0);
 
-  // Update and display all balls
   for (let ball of balls) {
     ball.update();
     ball.display();
@@ -18,36 +18,63 @@ function draw() {
 
 // Add a new ball on mouse press
 function mousePressed() {
-  const newBall = new Ball(mouseX, mouseY);
-  balls.push(newBall);
+  balls.push(new Ball(mouseX, mouseY));
 }
 
-// Ball class definition
+// Ball class
 class Ball {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+
     this.radius = random(20, 50);
-    this.color = color(random(255), random(255), random(255));
-    this.speedX = random(-2, 2);
-    this.speedY = random(-2, 2);
+
+    // Perlin noise offsets (unique per ball)
+    this.tx = random(1000);
+    this.ty = random(1000);
+
+    this.noiseSpeed = 0.01;
+    this.maxSpeed = 2;
+
+    // Direction multipliers for bouncing
+    this.dirX = 1;
+    this.dirY = 1;
   }
 
   update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
+    // Perlin-based velocities
+    let vx = map(noise(this.tx), 0, 1, -this.maxSpeed, this.maxSpeed);
+    let vy = map(noise(this.ty), 0, 1, -this.maxSpeed, this.maxSpeed);
+
+    this.x += vx * this.dirX;
+    this.y += vy * this.dirY;
+
+    // Advance noise space
+    this.tx += this.noiseSpeed;
+    this.ty += this.noiseSpeed;
 
     // Bounce off walls
-    if (this.x < this.radius || this.x > width - this.radius) {
-      this.speedX *= -1;
+    if (this.x < this.radius) {
+      this.x = this.radius;
+      this.dirX *= -1;
     }
-    if (this.y < this.radius || this.y > height - this.radius) {
-      this.speedY *= -1;
+    if (this.x > width - this.radius) {
+      this.x = width - this.radius;
+      this.dirX *= -1;
+    }
+
+    if (this.y < this.radius) {
+      this.y = this.radius;
+      this.dirY *= -1;
+    }
+    if (this.y > height - this.radius) {
+      this.y = height - this.radius;
+      this.dirY *= -1;
     }
   }
 
   display() {
-    fill(this.color);
+    fill(255, 220, 0); // yellow
     ellipse(this.x, this.y, this.radius * 2);
   }
 }
