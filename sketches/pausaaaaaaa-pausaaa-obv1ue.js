@@ -237,7 +237,7 @@ function drawOverMessage() {
 
   textSize(3.2 * PX);
   fill(200);
-  text("Premi SPAZIO per ricominciare", width / 2, height / 2 + 4 * PX);
+  //text("Premi SPAZIO per ricominciare", width / 2, height / 2 + 4 * PX);
   pop();
 }
 
