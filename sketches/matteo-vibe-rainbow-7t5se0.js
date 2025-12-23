@@ -7,7 +7,7 @@ let circles = [];
 let startTime;
 
 function setup() {
-  createCanvas(800, 400);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB);
   textAlign(CENTER, CENTER);
   textSize(80);
