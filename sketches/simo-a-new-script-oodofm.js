@@ -3,7 +3,7 @@
 
 let pixelsWide = 20;  // Number of "pixels" horizontally
 let pixelsHigh = 24;  // Number of "pixels" vertically
-let pixelSize = 20;   // Size of each block
+let pixelSize;
 
 let palette = {
   skin: '#D2A679',
@@ -22,7 +22,7 @@ let palette = {
 let mona = [];
 
 function setup() {
-  createCanvas(pixelsWide * pixelSize, pixelsHigh * pixelSize);
+  createCanvas(windowWidth, windowHeight);
   noStroke();
 
   // Simple low-res pixel Mona Lisa (20x24 grid)
@@ -56,13 +56,22 @@ function setup() {
 }
 
 function draw() {
+
+  
+  
+  push();
+  //translate(width/4, height/4)
   background(palette.background);
   drawMona();
   drawEyes();
+  pop();
 }
 
 // Draw the blocky pixel art Mona Lisa
 function drawMona() {
+  
+   pixelSize = 50*windowWidth/windowHeight;   // Size of each block
+  
   for (let y = 0; y < pixelsHigh; y++) {
     for (let x = 0; x < pixelsWide; x++) {
       let c = mona[y][x];
@@ -87,6 +96,8 @@ function getColor(c) {
 
 // Draw simple eye animation — the eyes follow the mouse
 function drawEyes() {
+   pixelSize = 50*windowWidth/windowHeight;   // Size of each block
+
   // Base position for eyes (approximate pixel centers)
   let leftEyeBase = createVector(8 * pixelSize + pixelSize / 2, 9 * pixelSize + pixelSize / 2);
   let rightEyeBase = createVector(11 * pixelSize + pixelSize / 2, 9 * pixelSize + pixelSize / 2);
@@ -112,4 +123,3 @@ function drawEye(basePos, mouseVec, offsetMax) {
   fill(palette.eyeDark);
   ellipse(basePos.x + dir.x * 0.2, basePos.y + dir.y * 0.2, pixelSize * 0.3, pixelSize * 0.3);
 }
-
